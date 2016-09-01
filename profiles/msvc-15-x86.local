@@ -1,0 +1,25 @@
+#
+# msvc-15-x86.local
+#
+
+ARCH="i386"
+TARGET_OS="win32"
+TOOLCHAIN="msvc"
+HOST="i686-w64-mingw32"
+
+VC_PATH="$VCINSTALLDIR/BIN"
+RC_PATH="$UniversalCRTSdkDir/bin/x86"
+CMAKE_PATH="$PROGRAMFILES/CMake/bin"
+PERL_PATH="$PROGRAMFILES/Perl/bin"
+MSBUILD_PATH=$(reg query "HKLM\\SOFTWARE\\Microsoft\\MSBuild\\ToolsVersions\\$VisualStudioVersion" -v MSBuildToolsPath | sed -n -e "s/^.*REG_SZ //p")
+
+PKG_CONFIG_PATH="$FF_PREFIX/lib/pkgconfig"
+CPPFLAGS="-I$FF_PREFIX/include"
+LDFLAGS="-LIBPATH:$FF_PREFIX/lib"
+PATH="$VC_PATH:$RC_PATH:$CMAKE_PATH:$PERL_PATH:$MSBUILD_PATH:$PATH"
+
+
+export PATH
+export HOST
+export PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=

@@ -1,0 +1,19 @@
+#
+# mingw-msys-x86.local
+#
+
+ARCH="x86"
+TARGET_OS="mingw32"
+HOST="i686-w64-mingw32"
+
+PKG_CONFIG_PATH="$FF_PREFIX/lib/pkgconfig"
+CPPFLAGS="-I$FF_PREFIX/include -m32"
+CXXFLAGS="-m32"
+CFLAGS="-m32"
+LDFLAGS="-L$FF_PREFIX/lib -m32"
+
+
+export CPPFLAGS CXXFLAGS CFLAGS LDFLAGS
+export PKG_CONFIG_PATH
+export PKG_CONFIG_LIBDIR=
+export HOST
