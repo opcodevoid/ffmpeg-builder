@@ -9,8 +9,8 @@ HOST="x86_64-w64-mingw32"
 
 VC_PATH="$VCINSTALLDIR/BIN/amd64"
 RC_PATH="$WindowsSdkDir/bin/x64"
-CMAKE_PATH="$PROGRAMFILES/CMake/bin"
-PERL_PATH="$PROGRAMFILES/Perl/bin"
+CMAKE_PATH="/mingw64/bin"
+PERL_PATH=$(reg query "HKLM\\SOFTWARE\\Perl" -ve | sed -n -e "s/^.*REG_SZ //p")bin
 MSBUILD_PATH=$(reg query "HKLM\\SOFTWARE\\Microsoft\\MSBuild\\ToolsVersions\\$VisualStudioVersion" -v MSBuildToolsPath | sed -n -e "s/^.*REG_SZ //p")
 
 PKG_CONFIG_PATH="$FF_PREFIX/lib/pkgconfig"
