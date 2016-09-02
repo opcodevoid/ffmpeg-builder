@@ -1,8 +1,10 @@
 #!/bin/bash
 
 FF_TIME=$(date +%s%N)
-FF_PATCH_DIR=$(pwd)/patches
-FF_PROFILE_DIR=$(pwd)/profiles
+FF_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FF_LIBS_DIR=$FF_DIR/libs
+FF_PATCH_DIR=$FF_DIR/patches
+FF_PROFILE_DIR=$FF_DIR/profiles
 FF_LOG_NAME="build.log"
 FF_LOG_PATH=""
 FF_PREFIX=""
@@ -12,7 +14,9 @@ FF_ENABLED_LIBS=""
 FF_BIN_DIR=""
 FF_INC_DIR=""
 FF_LIB_DIR=""
+FF_SRC_DIR=""
 FF_FUNCTIONS=( dependencies fetch configure make install enable )
+
 
 log_enable() {
 	exec 3>&1 4>&2 &>> $FF_LOG_PATH
@@ -172,16 +176,14 @@ exec_in_dir() {
 import_sources() {
 	source $FF_PROFILE_DIR/$FF_PROFILE.local
 
-	. $(pwd)/libs/ffmpeg.sh
+	. $FF_LIBS_DIR/ffmpeg.sh
 }
 
 import_installers() {
-	local lib_dir="libs"
-
-	if [[ -d $lib_dir ]]; then
-		for file in $lib_dir/*; do
+	if [[ -d $FF_LIBS_DIR ]]; then
+		for file in $FF_LIBS_DIR/*; do
 			if [[ -f $file ]] && [[ "$file" != *~ ]]; then
-				. $(pwd)/$file
+				. $file
 			fi
 		done
 	fi
@@ -272,7 +274,6 @@ install_library() {
 	# Resolve all dependencies recursively.
 	if [[ ! -z "$deps" ]]; then
 		for dep in ${deps[@]}; do
-			
 			install_library $dep
 		done
 	fi
@@ -280,6 +281,8 @@ install_library() {
 	log_disable
 	do_notify "Building $name"
 	log_enable
+	
+	# Critical functions will exit on error.
 	
 	do_notify "Fetching $name ..."
 	execute_function $name "$name"_fetch $name	|| error "Fetching $name failed!"
@@ -308,9 +311,8 @@ enable_library() {
 }
 
 create_build_dir() {
-	local build_dir=$FF_PREFIX/src
-	mkdir -p $build_dir
-	cd $build_dir
+	mkdir -p $FF_SRC_DIR
+	cd $FF_SRC_DIR
 }
 
 usage() {
@@ -318,12 +320,13 @@ usage() {
 	local my_name=$(basename -- "$0")
 	my_name="${my_name%.*}"
 
+	# List all available profiles.
 	if [[ -d $FF_PROFILE_DIR ]]; then
 		for file in $FF_PROFILE_DIR/*; do
 			if [[ -f $file ]] && [[ "$file" != *~ ]]; then
 				local name=$(basename -- "$file")
 				name="${name%.*}"
-				profiles="$profiles  $name    "
+				profiles="$profiles  $name\n"
 			fi
 		done
 	fi
@@ -341,7 +344,7 @@ usage() {
 	  -l,  --libs               space separated list of libraries to include into FFmpeg [optional].
 
 	Profiles:
-	$profiles
+	$(echo -e "$profiles")
 
 	_EOF_
 }
@@ -364,6 +367,7 @@ set_vars() {
 	FF_BIN_DIR="$FF_PREFIX/bin"
 	FF_INC_DIR="$FF_PREFIX/include"
 	FF_LIB_DIR="$FF_PREFIX/lib"
+	FF_SRC_DIR="$FF_PREFIX/src"
 	FF_LOG_PATH="$FF_PREFIX/$FF_LOG_NAME"
 }
 
