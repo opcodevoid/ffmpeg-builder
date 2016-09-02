@@ -44,7 +44,7 @@ x265_configure_win32() {
 
 x265_configure_win64() {
 	x265_set_params config
-	exec_in_dir "build" do_cmake "Visual Studio 14 2015 Win64" "../source" "Windows" "-DCMAKE_GENERATOR_PLATFORM=x64 -DSTATIC_LINK_CRT=On $config"
+	exec_in_dir "build" do_cmake "Visual Studio 14 2015 Win64" "../source" "Windows" "-DSTATIC_LINK_CRT=On $config"
 }
 
 x265_make() {
