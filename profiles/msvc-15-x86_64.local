@@ -8,7 +8,7 @@ TOOLCHAIN="msvc"
 HOST="x86_64-w64-mingw32"
 
 VC_PATH="$VCINSTALLDIR/BIN/amd64"
-RC_PATH="$UniversalCRTSdkDir/bin/x64"
+RC_PATH="$WindowsSdkDir/bin/x64"
 CMAKE_PATH="$PROGRAMFILES/CMake/bin"
 PERL_PATH="$PROGRAMFILES/Perl/bin"
 MSBUILD_PATH=$(reg query "HKLM\\SOFTWARE\\Microsoft\\MSBuild\\ToolsVersions\\$VisualStudioVersion" -v MSBuildToolsPath | sed -n -e "s/^.*REG_SZ //p")
