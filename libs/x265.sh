@@ -15,12 +15,12 @@ x265_set_params() {
 }
 
 x265_configure_darwin() {
-	x265_set_params config "Darwin"
+	x265_set_params config
 	exec_in_dir "build" do_cmake "Unix Makefiles" "../source" "Darwin" "$config"
 }
 
 x265_configure_linux() {
-	x265_set_params config "Linux"
+	x265_set_params config
 	exec_in_dir "build" do_cmake "Unix Makefiles" "../source" "Linux" "$config"
 }
 

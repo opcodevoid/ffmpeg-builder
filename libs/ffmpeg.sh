@@ -14,9 +14,8 @@ ffmpeg_clean() {
 ffmpeg_set_params() {
 	local __resultvar=$1
 	local options=$2
-	local target_os=$3
 
-	# Make options unique.
+	# Make enabled libraries unique.
 	FF_ENABLED_LIBS=$(echo "$FF_ENABLED_LIBS" | tr ' ' '\n' | sort -u)
 
 	add_prefix params "--arch=$ARCH \
@@ -34,8 +33,8 @@ ffmpeg_set_params() {
 		--enable-runtime-cpudetect \
 		--enable-memalign-hack \
 		--enable-pic \
-		$FF_ENABLED_LIBS \
-		$options"
+		$options \
+		$FF_ENABLED_LIBS"
 
 	eval $__resultvar='$params'
 }

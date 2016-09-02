@@ -339,7 +339,6 @@ usage() {
 	  -i,  --prefix             installation directory.
 	  -p,  --profile            target os profile, see below.
 	  -l,  --libs               space separated list of libraries to include into FFmpeg [optional].
-	  -c,  --cross              cross toolchain path [optional].
 
 	Profiles:
 	$profiles
@@ -399,9 +398,6 @@ while [ "$1" != "" ]; do
 							;;
 		-l | --libs )		shift
 							FF_LIBS=$1
-							;;
-		-c | --cross )		shift
-							FF_CROSS_TOOLCHAIN=$1
 							;;
 		-h | --help )		usage
  							exit
